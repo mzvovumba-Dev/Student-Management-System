@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Management System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <span class="nav-icon" aria-hidden="true">🎓</span>
+      <span>Student Management System</span>
+    </div>
+    <div class="nav-links">
+      <a href="#dashboard" class="nav-link active">Dashboard</a>
+      <a href="#students" class="nav-link">Students</a>
+      <a href="#reports" class="nav-link">Reports</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="container" role="main">
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+      <h1>Dashboard</h1>
+      <p class="subtitle">Manage and track all student records</p>
+    </header>
+
+    <!-- STATS CARDS -->
+    <section class="stats-grid" aria-label="Summary statistics">
+      <div class="stat-card">
+        <div class="stat-label">Total Students</div>
+        <div class="stat-value" id="total-count">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Students</div>
+        <div class="stat-value" id="active-count">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Average Score</div>
+        <div class="stat-value" id="avg-score">0%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Top Grade</div>
+        <div class="stat-value" id="top-grade">—</div>
+      </div>
+    </section>
+
+    <!-- MAIN GRID: FORM + TABLE -->
+    <div class="main-grid">
+
+      <!-- ADD STUDENT FORM -->
+      <section class="card form-card" aria-labelledby="form-title">
+        <h2 id="form-title">Add New Student</h2>
+
+        <div class="form-group">
+          <label for="s-name">Full Name <span class="required" aria-label="required">*</span></label>
+          <input
+            type="text"
+            id="s-name"
+            placeholder="e.g. Thabo Nkosi"
+            aria-required="true"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="s-id">Student ID <span class="required" aria-label="required">*</span></label>
+          <input
+            type="text"
+            id="s-id"
+            placeholder="e.g. STU001"
+            aria-required="true"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="s-grade">Grade <span class="required" aria-label="required">*</span></label>
+          <select id="s-grade" aria-required="true">
+            <option value="">-- Select Grade --</option>
+            <option value="Grade 8">Grade 8</option>
+            <option value="Grade 9">Grade 9</option>
+            <option value="Grade 10">Grade 10</option>
+            <option value="Grade 11">Grade 11</option>
+            <option value="Grade 12">Grade 12</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="s-score">Score (%) <span class="required" aria-label="required">*</span></label>
+          <input
+            type="number"
+            id="s-score"
+            placeholder="0 - 100"
+            min="0"
+            max="100"
+            aria-required="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="s-status">Status</label>
+          <select id="s-status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <!-- Error message area -->
+        <div id="form-error" class="error-msg" role="alert" aria-live="polite" hidden></div>
+        <!-- Success message area -->
+        <div id="form-success" class="success-msg" role="status" aria-live="polite" hidden></div>
+
+        <div class="form-buttons">
+          <button class="btn btn-primary" onclick="addStudent()">Add Student</button>
+          <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+        </div>
+      </section>
+
+      <!-- STUDENT TABLE SECTION -->
+      <section class="card table-card" aria-labelledby="table-title">
+        <h2 id="table-title">Student Records</h2>
+
+        <!-- SEARCH BAR -->
+        <div class="search-bar" role="search">
+          <label for="search-input" class="sr-only">Search students</label>
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Search by name or ID..."
+            aria-label="Search students by name or ID"
+            oninput="searchStudents()"
+          />
+          <select id="filter-grade" aria-label="Filter by grade" onchange="searchStudents()">
+            <option value="">All Grades</option>
+            <option value="Grade 8">Grade 8</option>
+            <option value="Grade 9">Grade 9</option>
+            <option value="Grade 10">Grade 10</option>
+            <option value="Grade 11">Grade 11</option>
+            <option value="Grade 12">Grade 12</option>
+          </select>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-wrapper" role="region" aria-label="Student records table" tabindex="0">
+          <table aria-label="List of students">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Student ID</th>
+                <th scope="col">Grade</th>
+                <th scope="col">Score</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="student-table-body">
+              <!-- Filled by JavaScript -->
+            </tbody>
+          </table>
+          <div id="empty-state" class="empty-state" hidden>
+            <p>No students found. Add one using the form.</p>
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <p>Student Management System &mdash; WA0101 Evidence &mdash; NQF Level 5</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
